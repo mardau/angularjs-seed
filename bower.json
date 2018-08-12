@@ -15,7 +15,6 @@
     "angular-local-storage" :"latest",
     
     "bootstrap": "latest",
-    "angular-bootstrap" : "latest",
     "font-awesome": "latest"
   }
 }
