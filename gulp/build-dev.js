@@ -3,6 +3,7 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
+const debug = require('gulp-debug');
 
 var $ = require('gulp-load-plugins')({
     pattern: ['gulp-*', 'main-bower-files', 'del']
@@ -33,18 +34,17 @@ gulp.task('html-dev', ['inject'], function ()
 // Custom fonts are handled by the "other" task
 gulp.task('fonts-dev', function ()
 {
-    return gulp.src($.mainBowerFiles())
-        .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
+    return gulp.src(path.join(conf.paths.src, '/assets/webfonts/*'))
+        .pipe(debug({ title: 'list fonts:' }))
         .pipe($.flatten())
-        .pipe(gulp.dest(path.join(conf.paths.dist, '/fonts/')));
+        .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/app/webfonts/')));
 });
 
 gulp.task('other-dev', ['vendorProd'], function ()
 {
     var fileFilter = $.filter(function (file)
     {
-        if (file.path.indexOf('bower_components') === -1)
-            return file.stat.isFile();
+        return file.stat.isFile();
     });
 
     return gulp.src([

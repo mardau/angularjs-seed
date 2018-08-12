@@ -17,48 +17,22 @@ gulp.task('styles-reload', ['styles'], function () {
         .pipe(browserSync.stream());
 });
 
-gulp.task('styles', function () {
+gulp.task('bootstrap', function(){
+    return gulp.src([
+        'bower_components/bootstrap/dist/css/bootstrap.min.css',
+        'bower_components/bootstrap/dist/css/bootstrap.min.css.map'])
+        .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/app/css/')));
+});
+
+gulp.task('styles', ['bootstrap'], function () {
     return buildStyles();
 });
 
 
 var buildStyles = function () {
-    // var sassOptions = {
-    //     style: 'expanded'
-    // };
-
-    // var injectFiles = gulp.src([
-    //     path.join(conf.paths.src, '/app/core/scss/**/*.scss'),
-    //     path.join(conf.paths.src, '/app/core/**/*.scss'),
-    //     path.join(conf.paths.src, '/app/**/*.scss'),
-    //     path.join('!' + conf.paths.src, '/app/main/components/material-docs/demo-partials/**/*.scss'),
-    //     path.join('!' + conf.paths.src, '/app/core/scss/partials/**/*.scss'),
-    //     path.join('!' + conf.paths.src, '/app/index.scss')
-    // ], { read: false });
-
+    
     var cssStream = gulp.src([path.join(conf.paths.src, '/app/css/*.css')])
         .pipe(concat('main.css'));
 
-    // var injectOptions = {
-    //     transform: function (filePath) {
-    //         filePath = filePath.replace(conf.paths.src + '/app/', '');
-    //         return '@import "' + filePath + '";';
-    //     },
-    //     starttag: '// injector',
-    //     endtag: '// endinjector',
-    //     addRootSlash: false
-    // };
-
-    // var sassStream = gulp.src([
-    //     path.join(conf.paths.src, '/app/index.scss')
-    // ])
-    //     .pipe($.inject(injectFiles, injectOptions))
-    //     .pipe(wiredep(_.extend({}, conf.wiredep)))
-    //     .pipe($.sourcemaps.init())
-    //     .pipe($.sass(sassOptions)).on('error', conf.errorHandler('Sass'))
-    //     .pipe($.autoprefixer()).on('error', conf.errorHandler('Autoprefixer'))
-    //     .pipe($.sourcemaps.write());
-
-    //var mergedStream = merge(sassStream, cssStream);
-    return cssStream.pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/app/')));
+    return cssStream.pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/app/css/')));
 };
